@@ -42,11 +42,11 @@ export const DocumentUpload = ({
   const renderInitialState = () => (
     <label
       htmlFor={`upload-${label.replace(/\s+/g, '-').toLowerCase()}`}
-      className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600 transition-colors"
+      className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600 transition-colors"
     >
-      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-        <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
-        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+      <div className="flex flex-col items-center justify-center">
+        <Upload className="w-6 h-6 mb-2 text-gray-500 dark:text-gray-400" />
+        <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
           <span className="font-semibold">Click to upload</span>
         </p>
         <p className="text-xs text-gray-500 dark:text-gray-400">{accept}</p>
@@ -56,7 +56,7 @@ export const DocumentUpload = ({
   );
 
   const renderUploadedState = () => (
-    <div className="w-full h-auto p-4 border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-500/30 rounded-lg">
+    <div className="w-full h-28 p-3 border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-500/30 rounded-lg flex flex-col justify-center">
       <div className="flex items-center justify-between">
         <div className="flex items-center min-w-0">
           <Check className="w-5 h-5 mr-2 text-green-600 dark:text-green-400 flex-shrink-0" />
