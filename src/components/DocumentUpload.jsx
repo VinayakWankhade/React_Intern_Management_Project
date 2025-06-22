@@ -18,10 +18,16 @@ export const DocumentUpload = ({
   };
   
   const handleDownload = () => {
-    // In a real app, this would trigger a download from a URL.
-    // For this mock, we'll just log a message.
-    console.log(`Downloading ${file.name}...`);
-    alert(`Simulating download for: ${file.name}`);
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
 
   const formatUploadDate = (dateString) => {
@@ -36,7 +42,7 @@ export const DocumentUpload = ({
   const renderInitialState = () => (
     <label
       htmlFor={`upload-${label.replace(/\s+/g, '-').toLowerCase()}`}
-      className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600 transition-colors"
+      className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600 transition-colors"
     >
       <div className="flex flex-col items-center justify-center pt-5 pb-6">
         <Upload className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" />
@@ -50,32 +56,34 @@ export const DocumentUpload = ({
   );
 
   const renderUploadedState = () => (
-    <div className="w-full h-32 p-4 border-2 border-green-300 bg-green-50 dark:bg-green-500/10 dark:border-green-500/50 rounded-lg flex flex-col justify-between">
-      <div>
-        <div className="flex items-center text-green-700 dark:text-green-300">
-          <Check className="w-5 h-5 mr-2" />
-          <p className="text-sm font-semibold truncate" title={file.name}>{file.name}</p>
+    <div className="w-full h-auto p-4 border border-green-200 bg-green-50 dark:bg-green-900/20 dark:border-green-500/30 rounded-lg">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center min-w-0">
+          <Check className="w-5 h-5 mr-2 text-green-600 dark:text-green-400 flex-shrink-0" />
+          <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate" title={file.name}>
+            {file.name}
+          </p>
         </div>
-        <div className="mt-2 ml-7 text-xs text-gray-600 dark:text-gray-400">
-          <div className="flex items-center">
-            <FileText className="w-3 h-3 mr-1.5" />
-            {(file.size / 1024).toFixed(1)} KB
-          </div>
-          {document.uploadDate && (
-            <div className="flex items-center mt-1">
-              <Calendar className="w-3 h-3 mr-1.5" />
-              {formatUploadDate(document.uploadDate)}
-            </div>
-          )}
+        <div className="flex items-center space-x-2 flex-shrink-0 ml-4">
+          <button onClick={handleDownload} className="p-1.5 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700/60 transition-colors">
+            <Download className="w-4 h-4" />
+          </button>
+          <button onClick={onFileRemove} className="p-1.5 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700/60 transition-colors">
+            <Trash2 className="w-4 h-4" />
+          </button>
         </div>
       </div>
-      <div className="flex items-center justify-end space-x-2">
-        <button onClick={handleDownload} className="p-1.5 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <Download className="w-4 h-4" />
-        </button>
-        <button onClick={onFileRemove} className="p-1.5 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
-          <Trash2 className="w-4 h-4" />
-        </button>
+      <div className="mt-2 pl-7 text-xs text-gray-500 dark:text-gray-400 space-y-1">
+        <div className="flex items-center">
+          <FileText className="w-3 h-3 mr-1.5" />
+          <span>{(file.size / 1024).toFixed(1)} KB</span>
+        </div>
+        {document.uploadDate && (
+          <div className="flex items-center">
+            <Calendar className="w-3 h-3 mr-1.5" />
+            <span>{formatUploadDate(document.uploadDate)}</span>
+          </div>
+        )}
       </div>
     </div>
   );
